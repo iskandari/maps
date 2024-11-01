@@ -24,55 +24,137 @@ const Mapbox = ({
   maxBounds,
   debug,
   children,
+  mapRef,
+  onMove,
+  onMoveStart,
+  onMoveEnd,
+  onViewStateChange,
 }) => {
-  const map = useRef()
-  const [ready, setReady] = useState()
+  const map = useRef(null)
+  const [ready, setReady] = useState(false)
 
-  const ref = useCallback((node) => {
-    const mapboxStyle = { version: 8, sources: {}, layers: [] }
-    if (glyphs) {
-      mapboxStyle.glyphs = glyphs
-    }
-    if (node !== null) {
-      map.current = new mapboxgl.Map({
-        container: node,
-        style: mapboxStyle,
-        minZoom: minZoom,
-        maxZoom: maxZoom,
-        maxBounds: maxBounds,
-        dragRotate: false,
-        pitchWithRotate: false,
-        touchZoomRotate: true,
-      })
-      if (center) map.current.setCenter(center)
-      if (zoom) map.current.setZoom(zoom)
-      map.current.touchZoomRotate.disableRotation()
-      map.current.touchPitch.disable()
-      map.current.on('styledata', () => {
-        setReady(true)
-      })
-    }
-  }, [])
+  // Refs to store event handler functions for cleanup
+  const onViewStateChangeHandlerRef = useRef(null)
 
+  // Initialize the map instance
+  const initializeMap = useCallback(
+    (node) => {
+      if (node !== null && !map.current) {
+        const mapboxStyle = { version: 8, sources: {}, layers: [] }
+        if (glyphs) {
+          mapboxStyle.glyphs = glyphs
+        }
+
+        map.current = new mapboxgl.Map({
+          container: node,
+          style: mapboxStyle,
+          center: center,
+          zoom: zoom,
+          minZoom: minZoom,
+          maxZoom: maxZoom,
+          maxBounds: maxBounds,
+          dragRotate: false,
+          pitchWithRotate: false,
+          touchZoomRotate: true,
+        })
+
+        // Disable unwanted interactions
+        map.current.touchZoomRotate.disableRotation()
+        map.current.touchPitch.disable()
+
+        // Set debug options
+        map.current.showTileBoundaries = debug
+
+        // Expose the map instance via mapRef
+        if (mapRef) {
+          mapRef.current = map.current
+        }
+
+        // Set up event listeners
+        if (onMove) {
+          map.current.on('move', onMove)
+        }
+        if (onMoveStart) {
+          map.current.on('movestart', onMoveStart)
+        }
+        if (onMoveEnd) {
+          map.current.on('moveend', onMoveEnd)
+        }
+        if (onViewStateChange) {
+          const handler = () => {
+            const { lng, lat } = map.current.getCenter()
+            const zoom = map.current.getZoom()
+            const bearing = map.current.getBearing()
+            const pitch = map.current.getPitch()
+            onViewStateChange({
+              longitude: lng,
+              latitude: lat,
+              zoom,
+              bearing,
+              pitch,
+            })
+          }
+          map.current.on('move', handler)
+          onViewStateChangeHandlerRef.current = handler
+        }
+
+        map.current.on('styledata', () => {
+          setReady(true)
+        })
+      }
+    },
+    [
+      glyphs,
+      center,
+      zoom,
+      minZoom,
+      maxZoom,
+      maxBounds,
+      debug,
+      mapRef,
+      onMove,
+      onMoveStart,
+      onMoveEnd,
+      onViewStateChange,
+    ]
+  )
+
+  // Cleanup on unmount or when handlers change
   useEffect(() => {
     return () => {
       if (map.current) {
+        // Remove event listeners
+        if (onMove) {
+          map.current.off('move', onMove)
+        }
+        if (onMoveStart) {
+          map.current.off('movestart', onMoveStart)
+        }
+        if (onMoveEnd) {
+          map.current.off('moveend', onMoveEnd)
+        }
+        if (onViewStateChange && onViewStateChangeHandlerRef.current) {
+          map.current.off('move', onViewStateChangeHandlerRef.current)
+          onViewStateChangeHandlerRef.current = null
+        }
+
+        // Remove the map instance
         map.current.remove()
+        map.current = null
         setReady(false)
       }
     }
-  }, [])
+  }, [onMove, onMoveStart, onMoveEnd, onViewStateChange])
 
+  // Update debug settings if `debug` prop changes
   useEffect(() => {
-    map.current.showTileBoundaries = debug
+    if (map.current) {
+      map.current.showTileBoundaries = debug
+    }
   }, [debug])
 
   return (
-    <MapboxContext.Provider
-      value={{
-        map: map.current,
-      }}
-    >
+    <MapboxContext.Provider value={{ map: map.current }}>
       <div
         style={{
           top: '0px',
@@ -81,7 +163,7 @@ const Mapbox = ({
           width: '100%',
           ...style,
         }}
-        ref={ref}
+        ref={initializeMap}
       />
       {ready && children}
     </MapboxContext.Provider>

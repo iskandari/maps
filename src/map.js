@@ -24,6 +24,11 @@ const Map = ({
   setMetadataLoading,
   /** Tracks any requests of new chunks by containing `Raster` layers */
   setChunkLoading,
+  mapRef, // Add this line
+  onMove,
+  onMoveStart,
+  onMoveEnd,
+  onViewStateChange,
 }) => {
   return (
     <div
@@ -47,6 +52,11 @@ const Map = ({
         debug={debug}
         glyphs={glyphs}
         style={{ position: 'absolute' }}
+        mapRef={mapRef} // Pass mapRef to Mapbox
+        onMove={onMove} // Forward event handlers
+        onMoveStart={onMoveStart}
+        onMoveEnd={onMoveEnd}
+        onViewStateChange={onViewStateChange}
       >
         <Regl
           extensions={extensions}
