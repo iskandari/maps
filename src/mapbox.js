@@ -19,6 +19,8 @@ const Mapbox = ({
   style,
   center,
   zoom,
+  bearing,
+  pitch,
   minZoom,
   maxZoom,
   maxBounds,
