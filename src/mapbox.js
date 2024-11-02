@@ -107,6 +107,8 @@ const Mapbox = ({
       glyphs,
       center,
       zoom,
+      bearing,
+      pitch,
       minZoom,
       maxZoom,
       maxBounds,
