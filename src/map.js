@@ -45,6 +45,7 @@ const Map = ({
       }}
     >
       <Mapbox
+        viewState={viewState}
         zoom={zoom}
         minZoom={minZoom}
         maxZoom={maxZoom}
