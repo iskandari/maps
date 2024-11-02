@@ -19,8 +19,6 @@ const Mapbox = ({
   style,
   center,
   zoom,
-  bearing,
-  pitch,
   minZoom,
   maxZoom,
   maxBounds,
@@ -52,8 +50,6 @@ const Mapbox = ({
           style: mapboxStyle,
           center: center,
           zoom: zoom,
-          pitch: pitch,
-          bearing: bearing,
           minZoom: minZoom,
           maxZoom: maxZoom,
           maxBounds: maxBounds,
@@ -111,8 +107,6 @@ const Mapbox = ({
       glyphs,
       center,
       zoom,
-      bearing,
-      pitch,
       minZoom,
       maxZoom,
       maxBounds,
@@ -124,7 +118,6 @@ const Mapbox = ({
       onViewStateChange,
     ]
   )
-
     // Update map when props change
     useEffect(() => {
       if (map.current) {
@@ -133,7 +126,7 @@ const Mapbox = ({
         map.current.setBearing(bearing);
         map.current.setPitch(pitch);
       }
-    }, [center, zoom, bearing, pitch]);
+    }, [center, zoom, bearin ,pitch]);
 
   // Cleanup on unmount or when handlers change
   useEffect(() => {

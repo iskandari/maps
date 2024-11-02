@@ -10,8 +10,6 @@ const Map = ({
   className,
   style,
   zoom,
-  pitch,
-  bearing,
   minZoom,
   maxZoom,
   maxBounds,
@@ -51,8 +49,6 @@ const Map = ({
         maxZoom={maxZoom}
         maxBounds={maxBounds}
         center={center}
-        bearing={bearing}
-        pitch={pitch}
         debug={debug}
         glyphs={glyphs}
         style={{ position: 'absolute' }}
