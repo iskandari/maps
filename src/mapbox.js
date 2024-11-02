@@ -126,7 +126,7 @@ const Mapbox = ({
     //     map.current.setBearing(bearing);
     //     map.current.setPitch(pitch);
     //   }
-    // }, [center, zoom, bearin ,pitch]);
+    // }, [center, zoom, bearing ,pitch]);
 
   // Cleanup on unmount or when handlers change
   useEffect(() => {
