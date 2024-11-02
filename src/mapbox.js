@@ -118,15 +118,15 @@ const Mapbox = ({
       onViewStateChange,
     ]
   )
-    // Update map when props change
-    useEffect(() => {
-      if (map.current) {
-        map.current.setCenter(center);
-        map.current.setZoom(zoom);
-        map.current.setBearing(bearing);
-        map.current.setPitch(pitch);
-      }
-    }, [center, zoom, bearin ,pitch]);
+    // // Update map when props change
+    // useEffect(() => {
+    //   if (map.current) {
+    //     map.current.setCenter(center);
+    //     map.current.setZoom(zoom);
+    //     map.current.setBearing(bearing);
+    //     map.current.setPitch(pitch);
+    //   }
+    // }, [center, zoom, bearin ,pitch]);
 
   // Cleanup on unmount or when handlers change
   useEffect(() => {
