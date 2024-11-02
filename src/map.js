@@ -9,6 +9,7 @@ const Map = ({
   tabIndex,
   className,
   style,
+  viewState, // add viewState
   zoom,
   minZoom,
   maxZoom,

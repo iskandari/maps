@@ -17,6 +17,7 @@ export const useMapbox = () => {
 const Mapbox = ({
   glyphs,
   style,
+  viewState, // Accept viewState
   center,
   zoom,
   minZoom,
@@ -45,11 +46,15 @@ const Mapbox = ({
           mapboxStyle.glyphs = glyphs
         }
 
+        const { longitude, latitude, zoom, bearing, pitch } = viewState
+
         map.current = new mapboxgl.Map({
           container: node,
           style: mapboxStyle,
-          center: center,
+          center: [longitude, latitude],
           zoom: zoom,
+          bearing: bearing,
+          pitch: pitch,
           minZoom: minZoom,
           maxZoom: maxZoom,
           maxBounds: maxBounds,
@@ -116,8 +121,23 @@ const Mapbox = ({
       onMoveStart,
       onMoveEnd,
       onViewStateChange,
+      viewState, // Add viewState to dependencies
     ]
   )
+
+    // Update the map when viewState changes
+    useEffect(() => {
+      if (map.current && viewState) {
+        const { longitude, latitude, zoom, bearing, pitch } = viewState
+        map.current.jumpTo({
+          center: [longitude, latitude],
+          zoom: zoom,
+          bearing: bearing,
+          pitch: pitch,
+        })
+      }
+    }, [viewState])
+    
   useEffect(() => {
     return () => {
       if (map.current) {
