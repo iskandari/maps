@@ -119,6 +119,16 @@ const Mapbox = ({
     ]
   )
 
+    // Update map when props change
+    useEffect(() => {
+      if (map.current) {
+        map.current.setCenter(center);
+        map.current.setZoom(zoom);
+        map.current.setBearing(bearing);
+        map.current.setPitch(pitch);
+      }
+    }, [center, zoom, bearing, pitch]);
+
   // Cleanup on unmount or when handlers change
   useEffect(() => {
     return () => {
