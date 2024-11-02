@@ -46,6 +46,11 @@ const Mapbox = ({
           mapboxStyle.glyphs = glyphs
         }
 
+        if (!viewState) {
+          console.error('viewState is undefined in Mapbox component');
+          return null; // or render a fallback UI
+        }
+
         const { longitude, latitude, zoom, bearing, pitch } = viewState
 
         map.current = new mapboxgl.Map({
