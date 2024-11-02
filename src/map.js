@@ -10,6 +10,8 @@ const Map = ({
   className,
   style,
   zoom,
+  pitch,
+  bearing,
   minZoom,
   maxZoom,
   maxBounds,
