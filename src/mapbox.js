@@ -52,6 +52,8 @@ const Mapbox = ({
           style: mapboxStyle,
           center: center,
           zoom: zoom,
+          pitch: pitch,
+          bearing: bearing,
           minZoom: minZoom,
           maxZoom: maxZoom,
           maxBounds: maxBounds,
