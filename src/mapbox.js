@@ -82,7 +82,10 @@ const Mapbox = ({
 
         // Set up event listeners
         if (onMove) {
-          map.current.on('move', onMove)
+          map.current.on('move', () => {
+            console.log('inside mapbox', 'moved')
+            onMove();
+          })
         }
         if (onMoveStart) {
           map.current.on('movestart', onMoveStart)

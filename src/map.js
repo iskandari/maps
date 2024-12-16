@@ -31,6 +31,7 @@ const Map = ({
   onMoveEnd,
   onViewStateChange,
 }) => {
+  console.log('on move function', onMove);
   return (
     <div
       id={id}
