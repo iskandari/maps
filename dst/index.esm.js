@@ -52,6 +52,7 @@ var Mapbox = function Mapbox(_ref) {
       onMoveStart = _ref.onMoveStart,
       onMoveEnd = _ref.onMoveEnd,
       onViewStateChange = _ref.onViewStateChange;
+  console.log('on move function inside of mapbox', onMove);
   var map = useRef(null);
 
   var _useState = useState(false),
@@ -108,12 +109,10 @@ var Mapbox = function Mapbox(_ref) {
       } // Set up event listeners
 
 
-      if (onMove) {
-        map.current.on('move', function () {
-          console.log('inside mapbox', 'moved');
-          onMove();
-        });
-      }
+      map.current.on('move', function () {
+        console.log('inside mapbox', 'moved', onMove);
+        onMove();
+      });
 
       if (onMoveStart) {
         map.current.on('movestart', onMoveStart);
@@ -761,7 +760,7 @@ var Map = function Map(_ref) {
       onMoveStart = _ref.onMoveStart,
       onMoveEnd = _ref.onMoveEnd,
       onViewStateChange = _ref.onViewStateChange;
-  console.log('on move function', onMove);
+  console.log('on move function inside of map', onMove);
   return /*#__PURE__*/React.createElement("div", {
     id: id,
     tabIndex: tabIndex,

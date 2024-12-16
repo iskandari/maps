@@ -54,6 +54,7 @@ const Mapbox = ({
   onMoveEnd,
   onViewStateChange
 }) => {
+  console.log('on move function inside of mapbox', onMove);
   const map = useRef(null);
   const [ready, setReady] = useState(false); // Refs to store event handler functions for cleanup
 
@@ -108,12 +109,10 @@ const Mapbox = ({
       } // Set up event listeners
 
 
-      if (onMove) {
-        map.current.on('move', () => {
-          console.log('inside mapbox', 'moved');
-          onMove();
-        });
-      }
+      map.current.on('move', () => {
+        console.log('inside mapbox', 'moved', onMove);
+        onMove();
+      });
 
       if (onMoveStart) {
         map.current.on('movestart', onMoveStart);
@@ -745,7 +744,7 @@ const Map = ({
   onMoveEnd,
   onViewStateChange
 }) => {
-  console.log('on move function', onMove);
+  console.log('on move function inside of map', onMove);
   return /*#__PURE__*/React.createElement("div", {
     id: id,
     tabIndex: tabIndex,
