@@ -37,6 +37,7 @@ const Mapbox = ({
       map.current = new mapboxgl.Map({
         container: node,
         style: mapboxStyle,
+        attributionControl: false,
         minZoom: minZoom,
         maxZoom: maxZoom,
         maxBounds: maxBounds,
